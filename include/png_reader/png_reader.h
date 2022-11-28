@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <memory>
 
-bool png_sig_cmp(const unsigned char* sig, size_t start, size_t num_to_check);
 
 
 class PNGReader
@@ -34,6 +33,7 @@ private:
     bool readData(std::ifstream& file);
     bool writeHeader(std::ofstream& file);
     bool writeData(std::ofstream& file);
+    bool png_sig_cmp(const unsigned char* sig, size_t start, size_t num_to_check);
 
     int width;
     int height;
@@ -276,7 +276,7 @@ std::vector<unsigned char> PNGReader::getRawData() const
     return data;
 }
 
-bool png_sig_cmp(unsigned char* sig, int start, int num_to_check)
+bool PNGReader::png_sig_cmp(const unsigned char* sig, size_t start, size_t num_to_check)
 {
     if (sig[start] != 137 || sig[start + 1] != 80 || sig[start + 2] != 78 || sig[start + 3] != 71 || sig[start + 4] != 13 || sig[start + 5] != 10 || sig[start + 6] != 26 || sig[start + 7] != 10)
     {
