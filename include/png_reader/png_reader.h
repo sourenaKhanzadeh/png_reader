@@ -28,6 +28,8 @@ public:
 
     std::vector<unsigned char> getRawData() const;
 
+    friend std::ostream& operator<<(std::ostream& os, const PNGReader& reader);
+
 private:
     bool readHeader(std::ifstream& file);
     bool readData(std::ifstream& file);
@@ -284,6 +286,28 @@ bool PNGReader::png_sig_cmp(const unsigned char* sig, size_t start, size_t num_t
     }
 
     return false;
+}
+
+std::ostream& operator<<(std::ostream& os, const PNGReader& png)
+{
+    os << "Width: " << png.width << std::endl;
+    os << "Height: " << png.height << std::endl;
+    os << "Data size: " << png.data.size() << std::endl;
+    // print all channels in a 3d grid
+    for (int y = 0; y < png.height; y++)
+    {
+        for (int x = 0; x < png.width; x++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                os << (int)png.data[16 + y * png.width * 3 + x * 3 + c] << " ";
+            }
+            os << " | ";
+        }
+        os << std::endl;
+    }
+
+    return os;
 }
 
 
